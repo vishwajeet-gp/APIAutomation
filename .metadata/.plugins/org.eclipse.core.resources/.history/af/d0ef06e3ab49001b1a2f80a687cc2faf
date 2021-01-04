@@ -1,0 +1,13 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class AscendingOrder {
+
+	public static void main(String[] args)
+	{   int a[]={22,11,44,3,34};
+	    ArrayList al=new ArrayList();
+		Collections.sort(al);
+	}
+
+}

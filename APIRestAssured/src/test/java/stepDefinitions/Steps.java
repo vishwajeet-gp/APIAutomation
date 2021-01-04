@@ -1,0 +1,76 @@
+package stepDefinitions;
+
+import apiEngine.EndPoints;
+import apiEngine.IRestResponse;
+import apiEngine.model.*;
+import apiEngine.model.requests.*;
+import apiEngine.model.responses.*;
+
+import java.awt.print.Book;
+
+import org.junit.Assert;
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+import io.cucumber.core.internal.gherkin.Token;
+import io.restassured.response.Response;
+
+public class Steps {
+
+    private static final String USER_ID = "9b5f49ab-eea9-45f4-9d66-bcf56a531b85";    
+    private static Response response;
+    private static Token tokenResponse;
+    private static IRestResponse<UserAccount> userAccountResponse;
+    private static Book book;
+    
+    
+    @Given("^I am an authorized user$")
+    public void iAmAnAuthorizedUser() {
+
+        AuthorizationRequest authRequest = new AuthorizationRequest("TOOLSQA-Test", "Test@@123");
+        tokenResponse = EndPoints.authenticateUser(authRequest).getBody();
+    }
+
+    @Given("^A list of books are available$")
+    public void listOfBooksAreAvailable() {
+    	IRestResponse<Books> booksResponse = EndPoints.getBooks();
+    	book = booksResponse.getBody().books.get(0);
+    }
+
+    @When("^I add a book to my reading list$")
+    public void addBookInList() {
+    	
+        ISBN isbn = new ISBN(book.isbn);
+        AddBooksRequest addBooksRequest = new AddBooksRequest(USER_ID, isbn);
+        userAccountResponse = EndPoints.addBook(addBooksRequest, tokenResponse.token);
+    }
+
+    @Then("^The book is added$")
+    public void bookIsAdded() {
+        
+    	Assert.assertTrue(userAccountResponse.isSuccessful());
+        Assert.assertEquals(201, userAccountResponse.getStatusCode());
+
+        Assert.assertEquals(USER_ID, userAccountResponse.getBody().userID);
+        Assert.assertEquals(book.isbn, userAccountResponse.getBody().books.get(0).isbn);
+    }
+
+    @When("^I remove a book from my reading list$")
+    public void removeBookFromList() {
+
+        RemoveBookRequest removeBookRequest = new RemoveBookRequest(USER_ID, book.isbn);
+        response = EndPoints.removeBook(removeBookRequest, tokenResponse.token);
+    }
+
+    @Then("^The book is removed$")
+    public void bookIsRemoved() {
+    	
+        Assert.assertEquals(204, response.getStatusCode());
+
+        userAccountResponse = EndPoints.getUserAccount(USER_ID, tokenResponse.token);
+        Assert.assertEquals(200, userAccountResponse.getStatusCode());
+        
+        Assert.assertEquals(0, userAccountResponse.getBody().books.size());
+    }
+
+}

@@ -1,0 +1,22 @@
+package FunctionalTesting;
+
+import org.testng.annotations.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.equalTo;
+import io.restassured.RestAssured;
+import io.restassured.specification.RequestSpecification;
+
+public class Get_Request 
+{
+   @Test
+   public void getRequest()
+   {
+	   RestAssured.baseURI="https://reqres.in/api/users";
+	   RequestSpecification response = RestAssured.given().param("page","2");
+	   //.when().get().then().assertThat().log().all().statusCode(200);
+	   System.out.println(response.getb);
+	   
+	   
+   }
+}

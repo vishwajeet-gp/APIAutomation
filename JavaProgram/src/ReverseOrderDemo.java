@@ -1,0 +1,23 @@
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class ReverseOrderDemo 
+{
+
+	public static void main(String[] args) 
+	{
+		ArrayList al=new ArrayList<>();
+		al.add(10);
+		al.add(20);
+		al.add(15);
+		al.add(5);
+		al.add(99);
+		al.add(12);
+		Collections.sort(al);
+		System.out.println("After Sorting="+al);
+		Collections.reverse(al);
+		System.out.println("After Reversing="+al);
+		
+	}
+
+}

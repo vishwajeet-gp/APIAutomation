@@ -1,0 +1,9 @@
+package apiDentalConfig;
+
+public class ApiPath {
+
+	public static final class apiPath
+	{
+		
+	}
+}

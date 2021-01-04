@@ -1,0 +1,25 @@
+package FunctionalTesting;
+
+import org.testng.annotations.Test;
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matcher.*;
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class Get_Request 
+{
+   @Test
+   public void getRequest()
+   {
+	   RestAssured.baseURI="https://reqres.in/api/users";
+	   Response response = RestAssured.given().param("page","2").when().get();
+	   //.when().get().then().assertThat().log().all().statusCode(200);
+	   System.out.println(response.getBody().asString());
+	   System.out.println("Get status code" +response.getStatusCode());
+	   System.out.println("Content Type" +response.ContentType());
+	   System.out.println("Time" +response.getTime());
+	   System.out.println("Cookies" +response.getCookies());
+	   System.out.println(response.prettyPrint());
+   }
+}

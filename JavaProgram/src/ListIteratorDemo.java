@@ -1,0 +1,29 @@
+import java.util.LinkedList;
+import java.util.ListIterator;
+
+public class ListIteratorDemo 
+{
+
+	public static void main(String[] args)
+	{
+		LinkedList l=new LinkedList<>();
+		l.add("Vishu");
+		l.add("Abhi");
+		l.add("Danny");
+		l.add("Dinu");
+		l.add("Prasad");
+		System.out.println(l);
+		ListIterator li=l.listIterator();
+		while(li.hasNext())
+		{
+			String s=(String)li.next();
+			if(s.equals("Vishu"))
+			{
+				li.set("Vishwajeet");
+			}
+		}
+		System.out.println(l);
+	}
+	
+
+}
